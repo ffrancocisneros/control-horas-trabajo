@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Horas Trabajadas</title>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Flatpickr CSS para calendario -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Control de Horas Trabajadas</h1>
+            <div class="config-section">
+                <label for="hourlyRate">Valor por hora ($):</label>
+                <input type="number" id="hourlyRate" value="4500" min="0" step="100">
+            </div>
+            <div class="theme-toggle-container">
+                <button id="themeToggle" class="theme-toggle" aria-label="Cambiar tema">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeText">Modo Oscuro</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Sección para agregar horarios -->
+            <section class="add-schedule">
+                <h2><i class="fas fa-clock"></i> Agregar Horario</h2>
+                <div class="form-group">
+                    <label for="date">Fecha:</label>
+                    <div class="date-input-container">
+                        <input type="text" id="date" placeholder="Seleccionar fecha" readonly required>
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="turn-section">
+                    <h3>Turno 1</h3>
+                    <div class="time-inputs">
+                        <div class="form-group">
+                            <label for="startTime1">Hora de entrada:</label>
+                            <div class="time-selector">
+                                <select id="startHour1" required>
+                                    <option value="">Hora</option>
+                                </select>
+                                <span>:</span>
+                                <select id="startMinute1" required>
+                                    <option value="">Min</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime1">Hora de salida:</label>
+                            <div class="time-selector">
+                                <select id="endHour1" required>
+                                    <option value="">Hora</option>
+                                </select>
+                                <span>:</span>
+                                <select id="endMinute1" required>
+                                    <option value="">Min</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="turn-section">
+                    <h3>Turno 2 (Opcional)</h3>
+                    <div class="time-inputs">
+                        <div class="form-group">
+                            <label for="startTime2">Hora de entrada:</label>
+                            <div class="time-selector">
+                                <select id="startHour2">
+                                    <option value="">Hora</option>
+                                </select>
+                                <span>:</span>
+                                <select id="startMinute2">
+                                    <option value="">Min</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime2">Hora de salida:</label>
+                            <div class="time-selector">
+                                <select id="endHour2">
+                                    <option value="">Hora</option>
+                                </select>
+                                <span>:</span>
+                                <select id="endMinute2">
+                                    <option value="">Min</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="addSchedule" class="btn-primary">Agregar Horario</button>
+            </section>
+
+            <!-- Resumen semanal -->
+            <section class="weekly-summary">
+                <div class="week-selector">
+                    <h2>Resumen Semanal</h2>
+                    <div class="week-navigation">
+                        <button id="prevWeek" class="btn-nav">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="week-info">
+                            <span id="currentWeekRange">Semana del 20/10/2025 al 26/10/2025</span>
+                            <span id="weekNumber">Semana 43</span>
+                        </div>
+                        <button id="nextWeek" class="btn-nav">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="summary-cards">
+                    <div class="card">
+                        <h3><i class="fas fa-hourglass-half"></i> Horas Totales</h3>
+                        <span id="totalHours">0</span>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-dollar-sign"></i> Sueldo Total</h3>
+                        <span id="totalSalary">$0</span>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Promedio Diario</h3>
+                        <span id="dailyAverage">0</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de horarios registrados -->
+            <section class="schedule-list">
+                <div class="schedule-header">
+                    <h2>Horarios Registrados</h2>
+                    <div class="week-indicator">
+                        <span id="scheduleWeekInfo">Mostrando horarios de la semana del 20/10/2025 al 26/10/2025</span>
+                    </div>
+                </div>
+                <div id="scheduleTable" class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Día</th>
+                                <th>Turno 1</th>
+                                <th>Horas T1</th>
+                                <th>Turno 2</th>
+                                <th>Horas T2</th>
+                                <th>Total Día</th>
+                                <th>Sueldo Día</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Flatpickr JS para calendario -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
